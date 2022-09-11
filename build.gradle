@@ -22,7 +22,7 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok:1.18.24'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
 
-//    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.0'
     testImplementation 'com.codeborne:selenide:6.7.4'
     testImplementation 'mysql:mysql-connector-java:8.0.30'
     testImplementation 'com.github.javafaker:javafaker:1.0.2'

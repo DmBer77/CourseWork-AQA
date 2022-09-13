@@ -8,7 +8,6 @@ import static com.codeborne.selenide.Selenide.$;
 public class DashboardPage {
     private SelenideElement heading = $("App_appContainer__3jRx1");
 
-
     public DashboardPage() {
         heading.shouldBe(visible);
     }

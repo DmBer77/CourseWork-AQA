@@ -1,32 +1,58 @@
 package ru.netology.page;
 
+import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-
-import java.util.concurrent.locks.Condition;
+import ru.netology.data.DataGenerator;
 
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Selenide.*;
 
 public class PaymentPage {
 
-    private SelenideElement heading = $("App_appContainer__3jRx1");
+    private final SelenideElement heading = $("App_appContainer__3jRx1");
 
     public void DashboardPage() {
         heading.shouldBe(visible);
     }
 
-    private static SelenideElement paymentByCard = $x("//*[contains(text(),'Оплата по карте')]");
-    private static SelenideElement paymentByCredit = $x("//*[contains(text(),'Кредит по данным карты')]");
-    private static SelenideElement cardNumber = $("form-field_theme_alfa-on-white input__control");
-    private static SelenideElement cardMonth = $x("//*[contains(text(),'Месяц')] input__control");
-    private static SelenideElement cardYear = $x("//*[contains(text(),'Год')] input__control");
-    private static SelenideElement cardHolder = $x("//*[contains(text(),'Владелец')] input__control");
-    private static SelenideElement cardCode = $x("//*[contains(text(),'CVC/CVV')] input__control");
-    private static SelenideElement paymentButton = $x("//*[contains(text(),'Продолжить')]");
-    private static SelenideElement notOk = $("notification_status_ok");
-    private static SelenideElement notError = $("notification_status_error");
+    private static final SelenideElement paymentByCard = $x("//*[contains(text(),'Купить')]");
+    private static final SelenideElement paymentByCredit = $x("//*[contains(text(),'Купить в кредит')]");
+    private static final ElementsCollection fields = $$(".input__control");
+    private static final SelenideElement cardNumber = fields.get(0);
+    private static final SelenideElement cardMonth = fields.get(1);
+    private static final SelenideElement cardYear = fields.get(2);
+    private static final SelenideElement cardHolder = fields.get(3);
+    private static final SelenideElement cardCode = fields.get(4);
+    private static final SelenideElement paymentButton = $(By.className("button_view_extra"));
+    private static final SelenideElement notOk = $("notification_status_ok");
+    private static final SelenideElement notError = $("notification_status_error");
+
+
+    public static void setPaymentByCard() {
+        paymentByCard.click();
+    }
+
+    public static void setPaymentByCredit() {
+        paymentByCredit.click();
+    }
+
+    public static void setCardNumber(int id) {
+        cardNumber.setValue(DataGenerator.getCardNumber(id));
+    }
+
+    public static void getPay() {
+        paymentButton.click();
+    }
+
+    public static void fillingInTheFields() {
+        cardMonth.setValue(DataGenerator.generateMonth());
+        cardYear.setValue(DataGenerator.generateYear());
+        cardHolder.setValue(DataGenerator.generateHolder("en"));
+        cardCode.setValue(DataGenerator.generateCode());
+    }
 
     public void getApprove() {
         notOk.shouldBe(Condition.visible);

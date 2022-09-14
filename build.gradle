@@ -6,7 +6,7 @@ plugins {
 group 'ru.netology'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 11
+sourceCompatibility = 16
 compileJava.options.encoding = "UTF-8"
 compileTestJava.options.encoding = "UTF-8"
 
@@ -33,3 +33,4 @@ test {
     useJUnitPlatform()
     systemProperty 'selenide.headless', System.getProperty('selenide.headless')
 }
+targetCompatibility = JavaVersion.VERSION_16

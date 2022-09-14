@@ -3,20 +3,14 @@ package ru.netology.page;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import ru.netology.data.DataGenerator;
 
-import static com.codeborne.selenide.Condition.visible;
+import java.time.Duration;
+
 import static com.codeborne.selenide.Selenide.*;
 
 public class PaymentPage {
-
-    private final SelenideElement heading = $("App_appContainer__3jRx1");
-
-    public void DashboardPage() {
-        heading.shouldBe(visible);
-    }
 
     private static final SelenideElement paymentByCard = $x("//*[contains(text(),'Купить')]");
     private static final SelenideElement paymentByCredit = $x("//*[contains(text(),'Купить в кредит')]");
@@ -26,10 +20,10 @@ public class PaymentPage {
     private static final SelenideElement cardYear = fields.get(2);
     private static final SelenideElement cardHolder = fields.get(3);
     private static final SelenideElement cardCode = fields.get(4);
-    private static final SelenideElement paymentButton = $(By.className("button_view_extra"));
-    private static final SelenideElement notOk = $("notification_status_ok");
-    private static final SelenideElement notError = $("notification_status_error");
-
+    private static final ElementsCollection button = $$(".button");
+    private static final SelenideElement paymentButton = button.get(2);
+    private static final SelenideElement notOk = $(".notification_status_ok");
+    private static final SelenideElement notError = $(".notification_status_error");
 
     public static void setPaymentByCard() {
         paymentByCard.click();
@@ -54,12 +48,12 @@ public class PaymentPage {
         cardCode.setValue(DataGenerator.generateCode());
     }
 
-    public void getApprove() {
-        notOk.shouldBe(Condition.visible);
+    public static void getApprove() {
+        notOk.shouldBe(Condition.visible, Duration.ofSeconds(15));
     }
 
-    public void getError() {
-        notError.shouldBe(Condition.visible);
+    public static void getError() {
+        notError.shouldBe(Condition.visible, Duration.ofSeconds(15));
     }
 
     public static void cleaning() {

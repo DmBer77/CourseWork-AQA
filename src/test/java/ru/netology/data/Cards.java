@@ -10,11 +10,6 @@ import lombok.NoArgsConstructor;
 public class Cards {
 
     private String id;
-//    private String cardNumber;
-//    private String cardMonth;
-//    private String cardYear;
-//    private String cardHolder;
-//    private String cardCode;
     private String status;
 
 }

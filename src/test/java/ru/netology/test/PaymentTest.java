@@ -45,7 +45,7 @@ public class PaymentTest {
         PaymentPage.setCardNumber(2);
         PaymentPage.fillingInTheFields();
         PaymentPage.getPay();
-        PaymentPage.getApprove();
+        PaymentPage.getError();
     }
 
     @Test
@@ -75,7 +75,7 @@ public class PaymentTest {
         PaymentPage.setCardNumber(2);
         PaymentPage.fillingInTheFields();
         PaymentPage.getPay();
-        PaymentPage.getApprove();
+        PaymentPage.getError();
     }
 
     @Test

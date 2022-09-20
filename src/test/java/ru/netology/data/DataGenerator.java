@@ -11,39 +11,59 @@ public class DataGenerator {
 
     static Faker faker = new Faker((new Locale("ru")));
 
-    public static String getCardNumber(int id) {
-        if (id == 1) {
-            return "1111 2222 3333 4444";
-        }
-        if (id == 2) {
-            return "5555 6666 7777 8888";
-        } else {
-            return "5544 6677 2233 9900";
-        }
+    public String getCardNumber(int id) {
+        return switch (id) {
+            case (0) -> "";
+            case (1) -> "1111 2222 3333 4444";
+            case (2) -> "5555 6666 7777 8888";
+            case (3) -> "5544 6677 2233 9900";
+            case (4) -> "0000 0000 0000 0000";
+            case (5) -> "number";
+            default -> throw new IllegalStateException("Unexpected value: " + id);
+        };
     }
 
-    public static String generateMonth() {
-        int month = faker.number().numberBetween(1, 12);
-        String res = null;
-        if (month < 10) {
-            res = "0" + month;
-        } else {
-            res = String.valueOf(month);
-        }
-        return res;
+    public String generateMonth(int month) {
+        return switch (month) {
+            case (0) -> "";
+            case (1) -> String.valueOf(faker.number().numberBetween(10, 12));
+            case (2) -> "15";
+            case (3) -> "month";
+            default -> "00";
+        };
     }
 
-    public static String generateYear() {
+    public String generateYear(int year) {
         int yearStart = LocalDate.now().getYear() + 1;
         int yearFinish = yearStart + 5;
-        return String.valueOf(faker.number().numberBetween(yearStart, yearFinish)).substring(2);
+        return switch (year) {
+            case (0) -> "";
+            case (1) -> String.valueOf(faker.number().numberBetween(yearStart, yearFinish)).substring(2);
+            case (2) -> String.valueOf(faker.number().numberBetween(yearStart, yearFinish)).substring(3);
+            case (3) -> "99";
+            case (4) -> "year";
+            default -> "00";
+        };
     }
 
-    public static String generateHolder(String locale) {
-        return faker.name().fullName().toUpperCase();
+    public String generateHolder(int holder) {
+        return switch (holder) {
+            case (0) -> "";
+            case (1) -> "STEVEN ROGERS";
+            case (2) -> String.valueOf(faker.number().numberBetween(1, 99));
+            case (3) -> faker.name().fullName().toUpperCase();
+            default -> "00";
+        };
     }
 
-    public static String generateCode() {
-        return String.valueOf(faker.number().numberBetween(100, 999));
+    public String generateCode(int code) {
+        return switch (code) {
+            case (0) -> "";
+            case (1) -> String.valueOf(faker.number().numberBetween(100, 999));
+            case (2) -> String.valueOf(faker.number().numberBetween(0, 99));
+            case (3) -> String.valueOf(faker.number().numberBetween(1000, 1999));
+            case (4) -> "code";
+            default -> "000";
+        };
     }
 }

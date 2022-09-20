@@ -11,7 +11,7 @@ import java.time.Duration;
 import static com.codeborne.selenide.Selenide.*;
 
 public class PaymentPage {
-
+    DataGenerator data = new DataGenerator();
     private static final SelenideElement paymentByCard = $x("//*[contains(text(),'Купить')]");
     private static final SelenideElement paymentByCredit = $x("//*[contains(text(),'Купить в кредит')]");
     private static final ElementsCollection fields = $$(".input__control");
@@ -24,39 +24,44 @@ public class PaymentPage {
     private static final SelenideElement paymentButton = button.get(2);
     private static final SelenideElement notOk = $(".notification_status_ok");
     private static final SelenideElement notError = $(".notification_status_error");
+    private static final SelenideElement notMustFill = $(".input__sub");
 
-    public static void setPaymentByCard() {
+    public void setPaymentByCard() {
         paymentByCard.click();
     }
 
-    public static void setPaymentByCredit() {
+    public void setPaymentByCredit() {
         paymentByCredit.click();
     }
 
-    public static void setCardNumber(int id) {
-        cardNumber.setValue(DataGenerator.getCardNumber(id));
+    public void setCardNumber(int id) {
+        cardNumber.setValue(data.getCardNumber(id));
     }
 
-    public static void getPay() {
+    public void getPay() {
         paymentButton.click();
     }
 
-    public static void fillingInTheFields() {
-        cardMonth.setValue(DataGenerator.generateMonth());
-        cardYear.setValue(DataGenerator.generateYear());
-        cardHolder.setValue(DataGenerator.generateHolder("en"));
-        cardCode.setValue(DataGenerator.generateCode());
+    public void fillingInTheFields(int month, int year, int holder, int code) {
+        cardMonth.setValue(data.generateMonth(month));
+        cardYear.setValue(data.generateYear(year));
+        cardHolder.setValue(data.generateHolder(holder));
+        cardCode.setValue(data.generateCode(code));
     }
 
-    public static void getApprove() {
+    public void getApprove() {
         notOk.shouldBe(Condition.visible, Duration.ofSeconds(15));
     }
 
-    public static void getError() {
+    public void getError() {
         notError.shouldBe(Condition.visible, Duration.ofSeconds(15));
     }
 
-    public static void cleaning() {
+    public void getFillTheForm() {
+        notMustFill.shouldBe(Condition.visible, Duration.ofSeconds(15));
+    }
+
+    public void cleaning() {
         cardNumber.doubleClick().sendKeys(Keys.BACK_SPACE);
         cardMonth.doubleClick().sendKeys(Keys.BACK_SPACE);
         cardYear.doubleClick().sendKeys(Keys.BACK_SPACE);

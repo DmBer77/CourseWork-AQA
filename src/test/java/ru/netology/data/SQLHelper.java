@@ -3,6 +3,7 @@ package ru.netology.data;
 import lombok.SneakyThrows;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,7 +12,7 @@ public class SQLHelper {
 
     private static final QueryRunner runner = new QueryRunner();
 
-    private SQLHelper() {
+    public SQLHelper() {
     }
 
     @SneakyThrows
@@ -20,23 +21,27 @@ public class SQLHelper {
     }
 
     @SneakyThrows
-    public static void getResponseFromDB() {
-        var creditAllSQL = "SELECT * FROM credit_request_entity;";
-        var creditApprovedSQL = "SELECT id FROM credit_request_entity WHERE status = 'APPROVED';";
-        var paymentAllSQL = "SELECT * FROM payment_entity;";
-        var paymentDeclineSQL = "SELECT id FROM payment_entity WHERE status = 'DECLINED';";
+    public int getCountOfApprovedCredit() {
+        var countApprovedCreditSQL = "SELECT count(status) FROM credit_request_entity WHERE status = 'APPROVED';";
+        Number result = 0;
         try (
                 var conn = getConn()
         ) {
-            var result1 = runner.query(conn, creditAllSQL, new BeanListHandler<>(Cards.class));
-            var result2 = runner.query(conn, creditApprovedSQL, new BeanListHandler<>(Cards.class));
-            var result3 = runner.query(conn, paymentAllSQL, new BeanListHandler<>(Cards.class));
-            var result4 = runner.query(conn, paymentDeclineSQL, new BeanListHandler<>(Cards.class));
-            System.out.println(result1);
-            System.out.println(result2);
-            System.out.println(result3);
-            System.out.println(result4);
+            result = runner.query(conn, countApprovedCreditSQL, new ScalarHandler<>());
         }
+        return result.intValue();
+    }
+
+    @SneakyThrows
+    public int getCountOfDeclinedPayment() {
+        var countDeclinedPaymentSQL = "SELECT count(status) FROM payment_entity WHERE status = 'DECLINED';";
+        Number result = 0;
+        try (
+                var conn = getConn()
+        ) {
+            result = runner.query(conn, countDeclinedPaymentSQL, new ScalarHandler<>());
+        }
+        return result.intValue();
     }
 
     @SneakyThrows

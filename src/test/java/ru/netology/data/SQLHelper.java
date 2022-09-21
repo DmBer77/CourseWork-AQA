@@ -22,7 +22,7 @@ public class SQLHelper {
 
     @SneakyThrows
     public int getCountOfApprovedCredit() {
-        var countApprovedCreditSQL = "SELECT count(status) FROM credit_request_entity WHERE status = 'APPROVED';";
+        var countApprovedCreditSQL = "SELECT count(id) FROM credit_request_entity WHERE status = 'APPROVED';";
         Number result = 0;
         try (
                 var conn = getConn()
@@ -34,7 +34,7 @@ public class SQLHelper {
 
     @SneakyThrows
     public int getCountOfDeclinedPayment() {
-        var countDeclinedPaymentSQL = "SELECT count(status) FROM payment_entity WHERE status = 'DECLINED';";
+        var countDeclinedPaymentSQL = "SELECT count(id) FROM payment_entity WHERE status = 'DECLINED';";
         Number result = 0;
         try (
                 var conn = getConn()

@@ -10,6 +10,8 @@ import ru.netology.data.SQLHelper;
 import ru.netology.page.CreditPage;
 import ru.netology.page.PaymentPage;
 
+import com.codeborne.selenide.Configuration;
+
 import static com.codeborne.selenide.Selenide.open;
 import static ru.netology.data.SQLHelper.cleanDatabase;
 
@@ -244,7 +246,19 @@ public class PaymentTest {
         paymentPage.getFillTheForm();
     }
 
-    //------------------------------------------------------------------------------
+    @Test
+    void shouldApprovePaymentByCardWitchMustBeDeclineIfSendRequestTwice () {
+        open("http://localhost:8080");
+        paymentPage.setPaymentByCard();
+        paymentPage.setCardNumber(3);
+        paymentPage.fillingInTheFields(1, 1, 1, 1);
+        paymentPage.getPay();
+        paymentPage.getError();
+        paymentPage.getPay();
+        paymentPage.getApprove();
+    }
+
+//------------------------------------------------------------------------------
     @Test
     void shouldApprovePaymentByCredit() {
         open("http://localhost:8080");
@@ -453,6 +467,18 @@ public class PaymentTest {
         creditPage.fillingInTheFields(1, 1, 1, 4);
         creditPage.getPay();
         creditPage.getFillTheForm();
+    }
+
+    @Test
+    void shouldApprovePaymentByCreditWitchMustBeDeclineIfSendRequestTwice () {
+        open("http://localhost:8080");
+        creditPage.setPaymentByCredit();
+        creditPage.setCardNumber(3);
+        creditPage.fillingInTheFields(1, 1, 1, 1);
+        creditPage.getPay();
+        creditPage.getError();
+        creditPage.getPay();
+        creditPage.getApprove();
     }
 
     //------------------------------------------------------------------------------

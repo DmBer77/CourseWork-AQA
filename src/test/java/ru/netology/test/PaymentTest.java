@@ -7,18 +7,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.netology.data.SQLHelper;
-import ru.netology.page.CreditPage;
+import ru.netology.page.DashboardPage;
 import ru.netology.page.PaymentPage;
-
-import com.codeborne.selenide.Configuration;
 
 import static com.codeborne.selenide.Selenide.open;
 import static ru.netology.data.SQLHelper.cleanDatabase;
 
 public class PaymentTest {
-
-    PaymentPage paymentPage = new PaymentPage();
-    CreditPage creditPage = new CreditPage();
 
     @BeforeAll
     static void setUpAll() {
@@ -35,31 +30,46 @@ public class PaymentTest {
         SelenideLogger.removeListener("allure");
     }
 
-
     @Test
     void shouldApprovePaymentByCard() {
         open("http://localhost:8080");
-        paymentPage.setPaymentByCard();
+        var dashboardPage = new DashboardPage();
+        dashboardPage.setPaymentByCard();
+        var paymentPage = new PaymentPage();
         paymentPage.setCardNumber(1);
         paymentPage.fillingInTheFields(1, 1, 1, 1);
         paymentPage.getPay();
         paymentPage.getApprove();
+
+        var sqlHelper = new SQLHelper();
+        int expected = 1;
+        int actual = sqlHelper.getCountOfApprovedPayment();
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
     void shouldDeclinePaymentByCardWithRightCard() {
         open("http://localhost:8080");
-        paymentPage.setPaymentByCard();
+        var dashboardPage = new DashboardPage();
+        dashboardPage.setPaymentByCard();
+        var paymentPage = new PaymentPage();
         paymentPage.setCardNumber(2);
         paymentPage.fillingInTheFields(1, 1, 1, 1);
         paymentPage.getPay();
         paymentPage.getError();
+
+        var sqlHelper = new SQLHelper();
+        int expected = 1;
+        int actual = sqlHelper.getCountOfDeclinedPayment();
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
     void shouldDeclinePaymentByCardWithMissingCardNumber() {
         open("http://localhost:8080");
-        paymentPage.setPaymentByCard();
+        var dashboardPage = new DashboardPage();
+        dashboardPage.setPaymentByCard();
+        var paymentPage = new PaymentPage();
         paymentPage.setCardNumber(0);
         paymentPage.fillingInTheFields(1, 1, 1, 1);
         paymentPage.getPay();
@@ -69,7 +79,9 @@ public class PaymentTest {
     @Test
     void shouldDeclinePaymentByCardWithWrongCardNumber() {
         open("http://localhost:8080");
-        paymentPage.setPaymentByCard();
+        var dashboardPage = new DashboardPage();
+        dashboardPage.setPaymentByCard();
+        var paymentPage = new PaymentPage();
         paymentPage.setCardNumber(3);
         paymentPage.fillingInTheFields(1, 1, 1, 1);
         paymentPage.getPay();
@@ -79,7 +91,9 @@ public class PaymentTest {
     @Test
     void shouldDeclinePaymentByCardWithCardNumberEqualZero() {
         open("http://localhost:8080");
-        paymentPage.setPaymentByCard();
+        var dashboardPage = new DashboardPage();
+        dashboardPage.setPaymentByCard();
+        var paymentPage = new PaymentPage();
         paymentPage.setCardNumber(4);
         paymentPage.fillingInTheFields(1, 1, 1, 1);
         paymentPage.getPay();
@@ -89,7 +103,9 @@ public class PaymentTest {
     @Test
     void shouldDeclinePaymentByCardWithTextInsteadOfCardNumber() {
         open("http://localhost:8080");
-        paymentPage.setPaymentByCard();
+        var dashboardPage = new DashboardPage();
+        dashboardPage.setPaymentByCard();
+        var paymentPage = new PaymentPage();
         paymentPage.setCardNumber(5);
         paymentPage.fillingInTheFields(1, 1, 1, 1);
         paymentPage.getPay();
@@ -99,7 +115,9 @@ public class PaymentTest {
     @Test
     void shouldDeclinePaymentByCardWithMissingMonth() {
         open("http://localhost:8080");
-        paymentPage.setPaymentByCard();
+        var dashboardPage = new DashboardPage();
+        dashboardPage.setPaymentByCard();
+        var paymentPage = new PaymentPage();
         paymentPage.setCardNumber(1);
         paymentPage.fillingInTheFields(0, 1, 1, 1);
         paymentPage.getPay();
@@ -109,7 +127,9 @@ public class PaymentTest {
     @Test
     void shouldDeclinePaymentByCardWithWrongMonth() {
         open("http://localhost:8080");
-        paymentPage.setPaymentByCard();
+        var dashboardPage = new DashboardPage();
+        dashboardPage.setPaymentByCard();
+        var paymentPage = new PaymentPage();
         paymentPage.setCardNumber(1);
         paymentPage.fillingInTheFields(2, 1, 1, 1);
         paymentPage.getPay();
@@ -119,7 +139,9 @@ public class PaymentTest {
     @Test
     void shouldDeclinePaymentByCardWithTextInsteadOfMonth() {
         open("http://localhost:8080");
-        paymentPage.setPaymentByCard();
+        var dashboardPage = new DashboardPage();
+        dashboardPage.setPaymentByCard();
+        var paymentPage = new PaymentPage();
         paymentPage.setCardNumber(1);
         paymentPage.fillingInTheFields(3, 1, 1, 1);
         paymentPage.getPay();
@@ -129,7 +151,9 @@ public class PaymentTest {
     @Test
     void shouldDeclinePaymentByCardWithMissingYear() {
         open("http://localhost:8080");
-        paymentPage.setPaymentByCard();
+        var dashboardPage = new DashboardPage();
+        dashboardPage.setPaymentByCard();
+        var paymentPage = new PaymentPage();
         paymentPage.setCardNumber(1);
         paymentPage.fillingInTheFields(1, 0, 1, 1);
         paymentPage.getPay();
@@ -139,7 +163,9 @@ public class PaymentTest {
     @Test
     void shouldDeclinePaymentByCardWithWrongYear() {
         open("http://localhost:8080");
-        paymentPage.setPaymentByCard();
+        var dashboardPage = new DashboardPage();
+        dashboardPage.setPaymentByCard();
+        var paymentPage = new PaymentPage();
         paymentPage.setCardNumber(1);
         paymentPage.fillingInTheFields(1, 2, 1, 1);
         paymentPage.getPay();
@@ -149,7 +175,9 @@ public class PaymentTest {
     @Test
     void shouldDeclinePaymentByCardWithWrongYearMinYear() {
         open("http://localhost:8080");
-        paymentPage.setPaymentByCard();
+        var dashboardPage = new DashboardPage();
+        dashboardPage.setPaymentByCard();
+        var paymentPage = new PaymentPage();
         paymentPage.setCardNumber(1);
         paymentPage.fillingInTheFields(1, 5, 1, 1);
         paymentPage.getPay();
@@ -159,7 +187,9 @@ public class PaymentTest {
     @Test
     void shouldDeclinePaymentByCardWithWrongYearMaxYear() {
         open("http://localhost:8080");
-        paymentPage.setPaymentByCard();
+        var dashboardPage = new DashboardPage();
+        dashboardPage.setPaymentByCard();
+        var paymentPage = new PaymentPage();
         paymentPage.setCardNumber(1);
         paymentPage.fillingInTheFields(1, 3, 1, 1);
         paymentPage.getPay();
@@ -169,7 +199,9 @@ public class PaymentTest {
     @Test
     void shouldDeclinePaymentByCardWithTextInsteadOfYear() {
         open("http://localhost:8080");
-        paymentPage.setPaymentByCard();
+        var dashboardPage = new DashboardPage();
+        dashboardPage.setPaymentByCard();
+        var paymentPage = new PaymentPage();
         paymentPage.setCardNumber(1);
         paymentPage.fillingInTheFields(1, 4, 1, 1);
         paymentPage.getPay();
@@ -179,7 +211,9 @@ public class PaymentTest {
     @Test
     void shouldDeclinePaymentByCardWithMissingHolder() {
         open("http://localhost:8080");
-        paymentPage.setPaymentByCard();
+        var dashboardPage = new DashboardPage();
+        dashboardPage.setPaymentByCard();
+        var paymentPage = new PaymentPage();
         paymentPage.setCardNumber(1);
         paymentPage.fillingInTheFields(1, 1, 0, 1);
         paymentPage.getPay();
@@ -189,7 +223,9 @@ public class PaymentTest {
     @Test
     void shouldDeclinePaymentByCardWithNumberInsteadOfHolder() {
         open("http://localhost:8080");
-        paymentPage.setPaymentByCard();
+        var dashboardPage = new DashboardPage();
+        dashboardPage.setPaymentByCard();
+        var paymentPage = new PaymentPage();
         paymentPage.setCardNumber(1);
         paymentPage.fillingInTheFields(1, 1, 2, 1);
         paymentPage.getPay();
@@ -199,7 +235,9 @@ public class PaymentTest {
     @Test
     void shouldDeclinePaymentByCardWithWrongHolder() {
         open("http://localhost:8080");
-        paymentPage.setPaymentByCard();
+        var dashboardPage = new DashboardPage();
+        dashboardPage.setPaymentByCard();
+        var paymentPage = new PaymentPage();
         paymentPage.setCardNumber(1);
         paymentPage.fillingInTheFields(1, 1, 3, 1);
         paymentPage.getPay();
@@ -209,7 +247,9 @@ public class PaymentTest {
     @Test
     void shouldDeclinePaymentByCardWithMissingCode() {
         open("http://localhost:8080");
-        paymentPage.setPaymentByCard();
+        var dashboardPage = new DashboardPage();
+        dashboardPage.setPaymentByCard();
+        var paymentPage = new PaymentPage();
         paymentPage.setCardNumber(1);
         paymentPage.fillingInTheFields(1, 1, 1, 0);
         paymentPage.getPay();
@@ -219,7 +259,9 @@ public class PaymentTest {
     @Test
     void shouldDeclinePaymentByCardWithWrongCodeTwoDigitNumber() {
         open("http://localhost:8080");
-        paymentPage.setPaymentByCard();
+        var dashboardPage = new DashboardPage();
+        dashboardPage.setPaymentByCard();
+        var paymentPage = new PaymentPage();
         paymentPage.setCardNumber(1);
         paymentPage.fillingInTheFields(1, 1, 1, 2);
         paymentPage.getPay();
@@ -229,7 +271,9 @@ public class PaymentTest {
     @Test
     void shouldDeclinePaymentByCardWithWrongHolderFourDigitNumber() {
         open("http://localhost:8080");
-        paymentPage.setPaymentByCard();
+        var dashboardPage = new DashboardPage();
+        dashboardPage.setPaymentByCard();
+        var paymentPage = new PaymentPage();
         paymentPage.setCardNumber(1);
         paymentPage.fillingInTheFields(1, 1, 1, 3);
         paymentPage.getPay();
@@ -239,7 +283,9 @@ public class PaymentTest {
     @Test
     void shouldDeclinePaymentByCardWithTextInsteadOfCode() {
         open("http://localhost:8080");
-        paymentPage.setPaymentByCard();
+        var dashboardPage = new DashboardPage();
+        dashboardPage.setPaymentByCard();
+        var paymentPage = new PaymentPage();
         paymentPage.setCardNumber(1);
         paymentPage.fillingInTheFields(1, 1, 1, 4);
         paymentPage.getPay();
@@ -247,258 +293,16 @@ public class PaymentTest {
     }
 
     @Test
-    void shouldApprovePaymentByCardWitchMustBeDeclineIfSendRequestTwice () {
+    void shouldApprovePaymentByCardWitchMustBeDeclineIfSendRequestTwice() {
         open("http://localhost:8080");
-        paymentPage.setPaymentByCard();
+        var dashboardPage = new DashboardPage();
+        dashboardPage.setPaymentByCard();
+        var paymentPage = new PaymentPage();
         paymentPage.setCardNumber(3);
         paymentPage.fillingInTheFields(1, 1, 1, 1);
         paymentPage.getPay();
         paymentPage.getError();
         paymentPage.getPay();
         paymentPage.getApprove();
-    }
-
-//------------------------------------------------------------------------------
-    @Test
-    void shouldApprovePaymentByCredit() {
-        open("http://localhost:8080");
-        creditPage.setPaymentByCredit();
-        creditPage.setCardNumber(1);
-        creditPage.fillingInTheFields(1, 1, 1, 1);
-        creditPage.getPay();
-        creditPage.getApprove();
-    }
-
-    @Test
-    void shouldDeclinePaymentByCreditWithRightCard() {
-        open("http://localhost:8080");
-        creditPage.setPaymentByCredit();
-        creditPage.setCardNumber(2);
-        creditPage.fillingInTheFields(1, 1, 1, 1);
-        creditPage.getPay();
-        creditPage.getError();
-    }
-
-    @Test
-    void shouldDeclinePaymentByCreditWithMissingCardNumber() {
-        open("http://localhost:8080");
-        creditPage.setPaymentByCredit();
-        creditPage.setCardNumber(0);
-        creditPage.fillingInTheFields(1, 1, 1, 1);
-        creditPage.getPay();
-        creditPage.getFillTheForm();
-    }
-
-    @Test
-    void shouldDeclinePaymentByCreditWithWrongCardNumber() {
-        open("http://localhost:8080");
-        creditPage.setPaymentByCredit();
-        creditPage.setCardNumber(3);
-        creditPage.fillingInTheFields(1, 1, 1, 1);
-        creditPage.getPay();
-        creditPage.getError();
-    }
-
-    @Test
-    void shouldDeclinePaymentByCreditWithCardNumberEqualZero() {
-        open("http://localhost:8080");
-        creditPage.setPaymentByCredit();
-        creditPage.setCardNumber(4);
-        creditPage.fillingInTheFields(1, 1, 1, 1);
-        creditPage.getPay();
-        creditPage.getFillTheForm();
-    }
-
-    @Test
-    void shouldDeclinePaymentByCreditWithTextInsteadOfCardNumber() {
-        open("http://localhost:8080");
-        creditPage.setPaymentByCredit();
-        creditPage.setCardNumber(5);
-        creditPage.fillingInTheFields(1, 1, 1, 1);
-        creditPage.getPay();
-        creditPage.getFillTheForm();
-    }
-
-    @Test
-    void shouldDeclinePaymentByCreditWithMissingMonth() {
-        open("http://localhost:8080");
-        creditPage.setPaymentByCredit();
-        creditPage.setCardNumber(1);
-        creditPage.fillingInTheFields(0, 1, 1, 1);
-        creditPage.getPay();
-        creditPage.getFillTheForm();
-    }
-
-    @Test
-    void shouldDeclinePaymentByCreditWithWrongMonth() {
-        open("http://localhost:8080");
-        creditPage.setPaymentByCredit();
-        creditPage.setCardNumber(1);
-        creditPage.fillingInTheFields(2, 1, 1, 1);
-        creditPage.getPay();
-        creditPage.getFillTheForm();
-    }
-
-    @Test
-    void shouldDeclinePaymentByCreditWithTextInsteadOfMonth() {
-        open("http://localhost:8080");
-        creditPage.setPaymentByCredit();
-        creditPage.setCardNumber(1);
-        creditPage.fillingInTheFields(3, 1, 1, 1);
-        creditPage.getPay();
-        creditPage.getFillTheForm();
-    }
-
-    @Test
-    void shouldDeclinePaymentByCreditWithMissingYear() {
-        open("http://localhost:8080");
-        creditPage.setPaymentByCredit();
-        creditPage.setCardNumber(1);
-        creditPage.fillingInTheFields(1, 0, 1, 1);
-        creditPage.getPay();
-        creditPage.getFillTheForm();
-    }
-
-    @Test
-    void shouldDeclinePaymentByCreditWithWrongYear() {
-        open("http://localhost:8080");
-        creditPage.setPaymentByCredit();
-        creditPage.setCardNumber(1);
-        creditPage.fillingInTheFields(1, 2, 1, 1);
-        creditPage.getPay();
-        creditPage.getFillTheForm();
-    }
-
-    @Test
-    void shouldDeclinePaymentByCreditWithWrongYearMinYear() {
-        open("http://localhost:8080");
-        creditPage.setPaymentByCredit();
-        creditPage.setCardNumber(1);
-        creditPage.fillingInTheFields(1, 5, 1, 1);
-        creditPage.getPay();
-        creditPage.getFillTheForm();
-    }
-
-    @Test
-    void shouldDeclinePaymentByCreditWithWrongYearMaxYear() {
-        open("http://localhost:8080");
-        creditPage.setPaymentByCredit();
-        creditPage.setCardNumber(1);
-        creditPage.fillingInTheFields(1, 3, 1, 1);
-        creditPage.getPay();
-        creditPage.getFillTheForm();
-    }
-
-    @Test
-    void shouldDeclinePaymentByCreditWithTextInsteadOfYear() {
-        open("http://localhost:8080");
-        creditPage.setPaymentByCredit();
-        creditPage.setCardNumber(1);
-        creditPage.fillingInTheFields(1, 4, 1, 1);
-        creditPage.getPay();
-        creditPage.getFillTheForm();
-    }
-
-    @Test
-    void shouldDeclinePaymentByCreditWithMissingHolder() {
-        open("http://localhost:8080");
-        creditPage.setPaymentByCredit();
-        creditPage.setCardNumber(1);
-        creditPage.fillingInTheFields(1, 1, 0, 1);
-        creditPage.getPay();
-        creditPage.getFillTheForm();
-    }
-
-    @Test
-    void shouldDeclinePaymentByCreditWithNumberInsteadOfHolder() {
-        open("http://localhost:8080");
-        creditPage.setPaymentByCredit();
-        creditPage.setCardNumber(1);
-        creditPage.fillingInTheFields(1, 1, 2, 1);
-        creditPage.getPay();
-        creditPage.getFillTheForm();
-    }
-
-    @Test
-    void shouldDeclinePaymentByCreditWithWrongHolder() {
-        open("http://localhost:8080");
-        creditPage.setPaymentByCredit();
-        creditPage.setCardNumber(1);
-        creditPage.fillingInTheFields(1, 1, 3, 1);
-        creditPage.getPay();
-        creditPage.getFillTheForm();
-    }
-
-    @Test
-    void shouldDeclinePaymentByCreditWithMissingCode() {
-        open("http://localhost:8080");
-        creditPage.setPaymentByCredit();
-        creditPage.setCardNumber(1);
-        creditPage.fillingInTheFields(1, 1, 1, 0);
-        creditPage.getPay();
-        creditPage.getFillTheForm();
-    }
-
-    @Test
-    void shouldDeclinePaymentByCreditWithWrongCodeTwoDigitNumber() {
-        open("http://localhost:8080");
-        creditPage.setPaymentByCredit();
-        creditPage.setCardNumber(1);
-        creditPage.fillingInTheFields(1, 1, 1, 2);
-        creditPage.getPay();
-        creditPage.getFillTheForm();
-    }
-
-    @Test
-    void shouldDeclinePaymentByCreditWithWrongHolderFourDigitNumber() {
-        open("http://localhost:8080");
-        creditPage.setPaymentByCredit();
-        creditPage.setCardNumber(1);
-        creditPage.fillingInTheFields(1, 1, 1, 3);
-        creditPage.getPay();
-        creditPage.getFillTheForm();
-    }
-
-    @Test
-    void shouldDeclinePaymentByCreditWithTextInsteadOfCode() {
-        open("http://localhost:8080");
-        creditPage.setPaymentByCredit();
-        creditPage.setCardNumber(1);
-        creditPage.fillingInTheFields(1, 1, 1, 4);
-        creditPage.getPay();
-        creditPage.getFillTheForm();
-    }
-
-    @Test
-    void shouldApprovePaymentByCreditWitchMustBeDeclineIfSendRequestTwice () {
-        open("http://localhost:8080");
-        creditPage.setPaymentByCredit();
-        creditPage.setCardNumber(3);
-        creditPage.fillingInTheFields(1, 1, 1, 1);
-        creditPage.getPay();
-        creditPage.getError();
-        creditPage.getPay();
-        creditPage.getApprove();
-    }
-
-    //------------------------------------------------------------------------------
-    @Test
-    void shouldReceiveElementFromBDApprovedCredit() {
-        SQLHelper sqlHelper = new SQLHelper();
-
-        int expected = 4;
-        int actual = sqlHelper.getCountOfApprovedCredit();
-
-        Assertions.assertEquals(expected, actual);
-    }
-
-    @Test
-    void shouldReceiveElementFromBDDeclinedPayment() {
-        SQLHelper sqlHelper = new SQLHelper();
-
-        int expected = 1;
-        int actual = sqlHelper.getCountOfDeclinedPayment();
-
-        Assertions.assertEquals(expected, actual);
     }
 }

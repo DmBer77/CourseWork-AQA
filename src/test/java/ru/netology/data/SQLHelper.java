@@ -2,7 +2,6 @@ package ru.netology.data;
 
 import lombok.SneakyThrows;
 import org.apache.commons.dbutils.QueryRunner;
-import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import java.sql.Connection;
@@ -33,6 +32,30 @@ public class SQLHelper {
     }
 
     @SneakyThrows
+    public int getCountOfDeclinedCredit() {
+        var countDeclinedCreditSQL = "SELECT count(id) FROM credit_request_entity WHERE status = 'DECLINED';";
+        Number result = 0;
+        try (
+                var conn = getConn()
+        ) {
+            result = runner.query(conn, countDeclinedCreditSQL, new ScalarHandler<>());
+        }
+        return result.intValue();
+    }
+
+    @SneakyThrows
+    public int getCountOfApprovedPayment() {
+        var countApprovedPaymentSQL = "SELECT count(id) FROM payment_entity WHERE status = 'APPROVED';";
+        Number result = 0;
+        try (
+                var conn = getConn()
+        ) {
+            result = runner.query(conn, countApprovedPaymentSQL, new ScalarHandler<>());
+        }
+        return result.intValue();
+    }
+
+    @SneakyThrows
     public int getCountOfDeclinedPayment() {
         var countDeclinedPaymentSQL = "SELECT count(id) FROM payment_entity WHERE status = 'DECLINED';";
         Number result = 0;
@@ -51,4 +74,5 @@ public class SQLHelper {
         runner.execute(conn, "DELETE FROM order_entity");
         runner.execute(conn, "DELETE FROM payment_entity");
     }
+
 }

@@ -6,12 +6,12 @@ import java.time.LocalDate;
 import java.util.Locale;
 
 public class DataGenerator {
-    public DataGenerator() {
+    private DataGenerator() {
     }
 
     static Faker faker = new Faker((new Locale("ru")));
 
-    public String getCardNumber(int id) {
+    public static String getCardNumber(int id) {
         return switch (id) {
             case (0) -> "";
             case (1) -> "1111 2222 3333 4444";
@@ -23,7 +23,7 @@ public class DataGenerator {
         };
     }
 
-    public String generateMonth(int month) {
+    public static String generateMonth(int month) {
         return switch (month) {
             case (0) -> "";
             case (1) -> String.valueOf(faker.number().numberBetween(10, 12));
@@ -33,7 +33,7 @@ public class DataGenerator {
         };
     }
 
-    public String generateYear(int year) {
+    public static String generateYear(int year) {
         int yearStart = LocalDate.now().getYear() + 1;
         int yearFinish = yearStart + 5;
         return switch (year) {
@@ -46,7 +46,7 @@ public class DataGenerator {
         };
     }
 
-    public String generateHolder(int holder) {
+    public static String generateHolder(int holder) {
         return switch (holder) {
             case (0) -> "";
             case (1) -> "STEVEN ROGERS";
@@ -56,7 +56,7 @@ public class DataGenerator {
         };
     }
 
-    public String generateCode(int code) {
+    public static String generateCode(int code) {
         return switch (code) {
             case (0) -> "";
             case (1) -> String.valueOf(faker.number().numberBetween(100, 999));

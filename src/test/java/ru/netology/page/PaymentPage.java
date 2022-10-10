@@ -1,51 +1,65 @@
 package ru.netology.page;
 
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.Keys;
 import ru.netology.data.DataGenerator;
 
 import java.time.Duration;
 
-public class PaymentPage {
-    DataGenerator data = new DataGenerator();
-    DashboardPage dashboard = new DashboardPage();
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
 
-    public void setPaymentByCard() {
-        dashboard.paymentByCard.click();
-    }
+public class PaymentPage {
+
+//    DataGenerator data = new DataGenerator();
+//    DashboardPage dashboard = new DashboardPage();
+
+    private final ElementsCollection fields = $$(".input__control");
+    private final SelenideElement cardNumber = fields.get(0);
+    private final SelenideElement cardMonth = fields.get(1);
+    private final SelenideElement cardYear = fields.get(2);
+    private final SelenideElement cardHolder = fields.get(3);
+    private final SelenideElement cardCode = fields.get(4);
+    private final ElementsCollection button = $$(".button");
+    private final SelenideElement paymentButton = button.get(2);
+    private final SelenideElement notOk = $(".notification_status_ok");
+    private final SelenideElement notError = $(".notification_status_error");
+    private final SelenideElement notMustFill = $(".input__sub");
 
     public void setCardNumber(int id) {
-        dashboard.cardNumber.setValue(data.getCardNumber(id));
+        cardNumber.setValue(DataGenerator.getCardNumber(id));
     }
 
     public void getPay() {
-        dashboard.paymentButton.click();
+        paymentButton.click();
     }
 
     public void fillingInTheFields(int month, int year, int holder, int code) {
-        dashboard.cardMonth.setValue(data.generateMonth(month));
-        dashboard.cardYear.setValue(data.generateYear(year));
-        dashboard.cardHolder.setValue(data.generateHolder(holder));
-        dashboard.cardCode.setValue(data.generateCode(code));
+        cardMonth.setValue(DataGenerator.generateMonth(month));
+        cardYear.setValue(DataGenerator.generateYear(year));
+        cardHolder.setValue(DataGenerator.generateHolder(holder));
+        cardCode.setValue(DataGenerator.generateCode(code));
     }
 
     public void getApprove() {
-        dashboard.notOk.shouldBe(Condition.visible, Duration.ofSeconds(15));
+        notOk.shouldBe(Condition.visible, Duration.ofSeconds(15));
     }
 
     public void getError() {
-        dashboard.notError.shouldBe(Condition.visible, Duration.ofSeconds(15));
+        notError.shouldBe(Condition.visible, Duration.ofSeconds(15));
     }
 
     public void getFillTheForm() {
-        dashboard.notMustFill.shouldBe(Condition.visible, Duration.ofSeconds(15));
+        notMustFill.shouldBe(Condition.visible, Duration.ofSeconds(15));
     }
 
     public void cleaning() {
-        dashboard.cardNumber.doubleClick().sendKeys(Keys.BACK_SPACE);
-        dashboard.cardMonth.doubleClick().sendKeys(Keys.BACK_SPACE);
-        dashboard.cardYear.doubleClick().sendKeys(Keys.BACK_SPACE);
-        dashboard.cardHolder.doubleClick().sendKeys(Keys.BACK_SPACE);
-        dashboard.cardCode.doubleClick().sendKeys(Keys.BACK_SPACE);
+        cardNumber.doubleClick().sendKeys(Keys.BACK_SPACE);
+        cardMonth.doubleClick().sendKeys(Keys.BACK_SPACE);
+        cardYear.doubleClick().sendKeys(Keys.BACK_SPACE);
+        cardHolder.doubleClick().sendKeys(Keys.BACK_SPACE);
+        cardCode.doubleClick().sendKeys(Keys.BACK_SPACE);
     }
 }

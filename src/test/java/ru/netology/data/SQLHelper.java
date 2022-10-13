@@ -11,7 +11,7 @@ public class SQLHelper {
 
     private static final QueryRunner runner = new QueryRunner();
 
-    public SQLHelper() {
+    private SQLHelper() {
     }
 
     @SneakyThrows
@@ -20,51 +20,27 @@ public class SQLHelper {
     }
 
     @SneakyThrows
-    public int getCountOfApprovedCredit() {
-        var countApprovedCreditSQL = "SELECT count(id) FROM credit_request_entity WHERE status = 'APPROVED';";
-        Number result = 0;
+    public static String getStatusOfCredit() {
+        var statusOfCreditSQL = "SELECT status FROM credit_request_entity WHERE last_insert_id(id);";
+        String result;
         try (
                 var conn = getConn()
         ) {
-            result = runner.query(conn, countApprovedCreditSQL, new ScalarHandler<>());
+            result = runner.query(conn, statusOfCreditSQL, new ScalarHandler<>());
         }
-        return result.intValue();
+        return result;
     }
 
     @SneakyThrows
-    public int getCountOfDeclinedCredit() {
-        var countDeclinedCreditSQL = "SELECT count(id) FROM credit_request_entity WHERE status = 'DECLINED';";
-        Number result = 0;
+    public static String getStatusOfPayment() {
+        var statusOfPaymentSQL = "SELECT status FROM payment_entity WHERE last_insert_id(id);";
+        String result;
         try (
                 var conn = getConn()
         ) {
-            result = runner.query(conn, countDeclinedCreditSQL, new ScalarHandler<>());
+            result = runner.query(conn, statusOfPaymentSQL, new ScalarHandler<>());
         }
-        return result.intValue();
-    }
-
-    @SneakyThrows
-    public int getCountOfApprovedPayment() {
-        var countApprovedPaymentSQL = "SELECT count(id) FROM payment_entity WHERE status = 'APPROVED';";
-        Number result = 0;
-        try (
-                var conn = getConn()
-        ) {
-            result = runner.query(conn, countApprovedPaymentSQL, new ScalarHandler<>());
-        }
-        return result.intValue();
-    }
-
-    @SneakyThrows
-    public int getCountOfDeclinedPayment() {
-        var countDeclinedPaymentSQL = "SELECT count(id) FROM payment_entity WHERE status = 'DECLINED';";
-        Number result = 0;
-        try (
-                var conn = getConn()
-        ) {
-            result = runner.query(conn, countDeclinedPaymentSQL, new ScalarHandler<>());
-        }
-        return result.intValue();
+        return result;
     }
 
     @SneakyThrows

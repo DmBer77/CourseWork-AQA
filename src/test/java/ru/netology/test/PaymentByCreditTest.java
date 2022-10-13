@@ -41,9 +41,8 @@ public class PaymentByCreditTest {
         creditPage.getPay();
         creditPage.getApprove();
 
-        var sqlHelper = new SQLHelper();
-        int expected = 1;
-        int actual = sqlHelper.getCountOfApprovedCredit();
+        String expected = "APPROVED";
+        String actual = SQLHelper.getStatusOfCredit();
         Assertions.assertEquals(expected, actual);
     }
 
@@ -58,9 +57,8 @@ public class PaymentByCreditTest {
         creditPage.getPay();
         creditPage.getError();
 
-        var sqlHelper = new SQLHelper();
-        int expected = 1;
-        int actual = sqlHelper.getCountOfDeclinedCredit();
+        String expected = "DECLINED";
+        String actual = SQLHelper.getStatusOfCredit();
         Assertions.assertEquals(expected, actual);
     }
 

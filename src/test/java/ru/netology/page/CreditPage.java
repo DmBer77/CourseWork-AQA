@@ -13,13 +13,6 @@ import static com.codeborne.selenide.Selenide.$$;
 
 public class CreditPage {
 
-//    DataGenerator data = new DataGenerator();
-//    DashboardPage dashboard = new DashboardPage();
-
-//    public void setPaymentByCredit() {
-//        DashboardPage.paymentByCredit.click();
-//    }
-
     private final ElementsCollection fields = $$(".input__control");
     private final SelenideElement cardNumber = fields.get(0);
     private final SelenideElement cardMonth = fields.get(1);

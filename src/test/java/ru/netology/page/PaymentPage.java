@@ -13,9 +13,6 @@ import static com.codeborne.selenide.Selenide.$$;
 
 public class PaymentPage {
 
-//    DataGenerator data = new DataGenerator();
-//    DashboardPage dashboard = new DashboardPage();
-
     private final ElementsCollection fields = $$(".input__control");
     private final SelenideElement cardNumber = fields.get(0);
     private final SelenideElement cardMonth = fields.get(1);

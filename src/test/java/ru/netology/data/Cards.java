@@ -11,5 +11,4 @@ public class Cards {
 
     private String id;
     private String status;
-
 }
